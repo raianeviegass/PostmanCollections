@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "08b812b2-fff0-4624-92c2-7fd0dd91d5d9",
+		"name": "Lojinha API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cadastrar um novo usuário",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarioNome\": \"Raiane Viegas no PQTS\",\r\n  \"usuarioLogin\": \"raianeviegasnopqts\",\r\n  \"usuarioSenha\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{servidor3}}/v2/usuarios",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login e senha válidos  trará retorno de 200 OK",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const resposta = pm.response.json();\r",
+							"pm.globals.set(\"tokenLojinha\", resposta.data.token);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarioLogin\": \"raianeviegasnopqts\",\r\n  \"usuarioSenha\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{servidor3}}/v2/login",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login válido com Senha vazia trará retorno 401 Not Authorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarioLogin\": \"admin\",\r\n  \"usuarioSenha\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{servidor3}}/v2/login",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login vazio com Senha válida trará retorno 401 Not Authorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarioLogin\": \"\",\r\n  \"usuarioSenha\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{servidor3}}/v2/login",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login vazio com Senha vazia trará retorno 401 Not Authorized",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"usuarioLogin\": \"\",\r\n  \"usuarioSenha\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{servidor3}}/v2/login",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar um novo produto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenLojinha}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"produtoNome\": \"Play Station 5\",\r\n  \"produtoValor\": 5000.00,\r\n  \"produtoCores\": [\r\n    \"preto\", \"azul\"\r\n  ],\r\n  \"produtoUrlMock\": \"\",\r\n  \"componentes\": [\r\n    {\r\n      \"componenteNome\": \"Controle\",\r\n      \"componenteQuantidade\": 2\r\n    },\r\n    {\r\n      \"componenteNome\": \"Jogo de aventura\",\r\n      \"componenteQuantidade\": 1\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{servidor3}}/v2/produtos",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"produtos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar todos os produtos do usuário",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenLojinha}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{servidor3}}/v2/produtos",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"produtos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar todos os produtos do usuário por filtros",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenLojinha}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{servidor3}}/v2/produtos?produtoNome=Play",
+					"host": [
+						"{{servidor3}}"
+					],
+					"path": [
+						"v2",
+						"produtos"
+					],
+					"query": [
+						{
+							"key": "produtoNome",
+							"value": "Play"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
