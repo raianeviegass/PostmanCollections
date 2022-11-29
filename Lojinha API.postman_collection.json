@@ -1,18 +1,32 @@
 {
 	"info": {
-		"_postman_id": "08b812b2-fff0-4624-92c2-7fd0dd91d5d9",
+		"_postman_id": "a1442426-5e25-45a5-9f08-084c12777b6c",
 		"name": "Lojinha API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8586971"
 	},
 	"item": [
 		{
 			"name": "Cadastrar um novo usuário",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"usuarioNome\": \"Raiane Viegas no PQTS\",\r\n  \"usuarioLogin\": \"raianeviegasnopqts\",\r\n  \"usuarioSenha\": \"123456\"\r\n}",
+					"raw": "{\r\n  \"usuarioNome\": \"Raiane Viegas no PQTS\",\r\n  \"usuarioLogin\": \"raianeviegasnopqts20\",\r\n  \"usuarioSenha\": \"123456\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -20,9 +34,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{servidor3}}/v2/usuarios",
+					"raw": "{{base_url}}/v2/usuarios",
 					"host": [
-						"{{servidor3}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"v2",
@@ -33,14 +47,14 @@
 			"response": []
 		},
 		{
-			"name": "Login e senha válidos  trará retorno de 200 OK",
+			"name": "Obter o token do usuário",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"const resposta = pm.response.json();\r",
-							"pm.globals.set(\"tokenLojinha\", resposta.data.token);\r",
+							"pm.collectionVariables.set(\"tokenUser\", resposta.data.token);\r",
 							"\r",
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
@@ -52,7 +66,13 @@
 			],
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n  \"usuarioLogin\": \"raianeviegasnopqts\",\r\n  \"usuarioSenha\": \"123456\"\r\n}",
@@ -63,129 +83,9 @@
 					}
 				},
 				"url": {
-					"raw": "{{servidor3}}/v2/login",
+					"raw": "{{base_url}}/v2/login",
 					"host": [
-						"{{servidor3}}"
-					],
-					"path": [
-						"v2",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login válido com Senha vazia trará retorno 401 Not Authorized",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 401\", function () {\r",
-							"    pm.response.to.have.status(401);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"usuarioLogin\": \"admin\",\r\n  \"usuarioSenha\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{servidor3}}/v2/login",
-					"host": [
-						"{{servidor3}}"
-					],
-					"path": [
-						"v2",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login vazio com Senha válida trará retorno 401 Not Authorized",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 401\", function () {\r",
-							"    pm.response.to.have.status(401);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"usuarioLogin\": \"\",\r\n  \"usuarioSenha\": \"admin\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{servidor3}}/v2/login",
-					"host": [
-						"{{servidor3}}"
-					],
-					"path": [
-						"v2",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Login vazio com Senha vazia trará retorno 401 Not Authorized",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 401\", function () {\r",
-							"    pm.response.to.have.status(401);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"usuarioLogin\": \"\",\r\n  \"usuarioSenha\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{servidor3}}/v2/login",
-					"host": [
-						"{{servidor3}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"v2",
@@ -202,6 +102,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
 							""
 						],
 						"type": "text/javascript"
@@ -213,13 +117,13 @@
 				"header": [
 					{
 						"key": "token",
-						"value": "{{tokenLojinha}}",
+						"value": "{{tokenUser}}",
 						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"produtoNome\": \"Play Station 5\",\r\n  \"produtoValor\": 5000.00,\r\n  \"produtoCores\": [\r\n    \"preto\", \"azul\"\r\n  ],\r\n  \"produtoUrlMock\": \"\",\r\n  \"componentes\": [\r\n    {\r\n      \"componenteNome\": \"Controle\",\r\n      \"componenteQuantidade\": 2\r\n    },\r\n    {\r\n      \"componenteNome\": \"Jogo de aventura\",\r\n      \"componenteQuantidade\": 1\r\n    }\r\n  ]\r\n}",
+					"raw": "{\r\n  \"produtoNome\": \"Play Station 9\",\r\n  \"produtoValor\": 1,\r\n  \"produtoCores\": [\r\n    \"preto\", \"azul\"\r\n  ],\r\n  \"produtoUrlMock\": \"\",\r\n  \"componentes\": [\r\n    {\r\n      \"componenteNome\": \"Controle\",\r\n      \"componenteQuantidade\": 2\r\n    },\r\n    {\r\n      \"componenteNome\": \"Jogo de aventura\",\r\n      \"componenteQuantidade\": 1\r\n    }\r\n  ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -227,13 +131,65 @@
 					}
 				},
 				"url": {
-					"raw": "{{servidor3}}/v2/produtos",
+					"raw": "{{base_url}}/v2/produtos",
 					"host": [
-						"{{servidor3}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"v2",
 						"produtos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar um produto existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenUser}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"produtoNome\": \"PS12\",\r\n  \"produtoValor\": 1500,\r\n  \"produtoCores\": [\r\n    \"cinza\"\r\n  ],\r\n  \"produtoUrlMock\": \"string\",\r\n  \"componentes\": [\r\n    {\r\n      \"componenteNome\": \"Cabo de energia\",\r\n      \"componenteQuantidade\": 1\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v2/produtos/6417",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v2",
+						"produtos",
+						"6417"
 					]
 				}
 			},
@@ -246,14 +202,14 @@
 				"header": [
 					{
 						"key": "token",
-						"value": "{{tokenLojinha}}",
-						"type": "default"
+						"value": "{{tokenUser}}",
+						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "{{servidor3}}/v2/produtos",
+					"raw": "{{base_url}}/v2/produtos",
 					"host": [
-						"{{servidor3}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"v2",
@@ -270,14 +226,14 @@
 				"header": [
 					{
 						"key": "token",
-						"value": "{{tokenLojinha}}",
+						"value": "{{tokenUser}}",
 						"type": "default"
 					}
 				],
 				"url": {
-					"raw": "{{servidor3}}/v2/produtos?produtoNome=Play",
+					"raw": "{{base_url}}/v2/produtos?produtoCor=cinza",
 					"host": [
-						"{{servidor3}}"
+						"{{base_url}}"
 					],
 					"path": [
 						"v2",
@@ -285,13 +241,158 @@
 					],
 					"query": [
 						{
-							"key": "produtoNome",
-							"value": "Play"
+							"key": "produtoCor",
+							"value": "cinza"
 						}
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Buscar um produto do usuário",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenUser}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/v2/produtos/146408",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v2",
+						"produtos",
+						"146408"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remover um produto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenUser}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/v2/produtos/146409",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v2",
+						"produtos",
+						"146409"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar um novo componente ao produto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{tokenUser}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"componenteNome\": \"TEST\",\r\n  \"componenteQuantidade\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/v2/produtos/6417/componentes",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"v2",
+						"produtos",
+						"6417",
+						"componentes"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "165.227.93.41/lojinha-bugada",
+			"type": "string"
+		},
+		{
+			"key": "tokenUser",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
